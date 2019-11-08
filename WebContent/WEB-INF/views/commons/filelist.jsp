@@ -22,10 +22,17 @@ td{
 	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 	padding : 5px 10px;
-	background: ivory;
+
 }
 td:hover{
 	background: #ccf;
+}
+tbody tr:nth-child(2n) {
+   background-color: ivory;
+}
+
+tbody tr:nth-child(2n+1) {
+   background-color: #FAEBD7;
 }
 
 </style>

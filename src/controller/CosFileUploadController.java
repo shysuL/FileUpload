@@ -13,12 +13,18 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
 
+import dao.face.FileDao;
+import dao.impl.FileDaoImpl;
+import dto.UploadFile;
+import service.face.FileService;
+import service.impl.FileServiceImpl;
+
 
 
 @WebServlet("/cos/fileupload")
 public class CosFileUploadController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private FileDao fileDao = new FileDaoImpl();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,7 +34,7 @@ public class CosFileUploadController extends HttpServlet {
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("/cos/fileupload [POST]");
+//		System.out.println("/cos/fileupload [POST]");
 	
 		
 		// - - 매개변수 준비 - -
@@ -58,6 +64,38 @@ public class CosFileUploadController extends HttpServlet {
 				encoding,
 				policy
 				);
+		// -------------------------------------------
+		
+		// - - - 업로드 정보 확인 - - - 
+		resp.setContentType("text/html; charset=utf-8");
+		
+		resp.getWriter()
+			.append("- - - 전달 파라미터 - - - <br>")
+			.append("title : " + mul.getParameter("title") + "<br>")
+			.append("nick: " + mul.getParameter("nick") + "<br>")
+			.append("<br>")
+			.append("- - - 저장된 파일의 이름- - - <br>")
+			.append(mul.getFilesystemName("upfile")+ "<br>")
+			.append("<br>")
+			.append("- - - 원본 파일의 이름- - - <br>")
+			.append(mul.getOriginalFileName("upfile")+ "<br>")
+			.append("<br>")
+			.append("- - - 파일 형식- - - <br>")
+			.append(mul.getContentType("upfile")+ "<br>");
+			
+		// -------------------------------------------
+		// 
+		
+		//  업로드 처리
+		
+		UploadFile uploadFile = new UploadFile();
+		
+		uploadFile.setOriginName(mul.getOriginalFileName("upfile"));
+		uploadFile.setStoredName(mul.getFilesystemName("upfile"));
+		
+		
+		fileDao.insert(uploadFile);
+		
 		
 		
 	}
