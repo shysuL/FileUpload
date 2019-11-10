@@ -62,7 +62,7 @@ public class CosFileUploadController extends HttpServlet {
 				saveDirectory,
 				maxPostSize,
 				encoding,
-				policy
+				policy 
 				);
 		// -------------------------------------------
 		
